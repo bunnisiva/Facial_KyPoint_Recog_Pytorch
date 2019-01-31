@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>18.1 - Intro to R</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    body {
+      font-family: Helvetica, sans-serif;
+    }
+
+    pre {
+      font-size: 1.2em;
+      line-height: 1.5;
+    }
+
+    .hideable:hover {
+      cursor: pointer;
+    }
+
+    .hidden {
+      border-bottom: 1px solid black;
+      color: transparent;
+    }
+
+    ::selection {
+      background: #ffb7b7;
+    }
+
+    ::-moz-selection {
+      background: #ffb7b7;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>18.1 - Intro to R</h1>
+
+  <h2>Getting Started</h2>
+
+  <p><a href="https://www.r-project.org/">R</a> is a programming language primarily used
+    for statistical computing and data analysis. R is relatively popular in academia.
+    Like R, Python is widely used for data analysis, data visualization, and machine learning,
+    but Python is a more general-purpose language that is commonly used for other tasks too,
+    like web development.</p>
+
+  <ul>
+    <li><a href="https://cran.rstudio.com/">Download R</a> (the programming language itself)</li>
+    <li><a href="https://www.rstudio.com/products/rstudio/download/#download">Download RStudio</a> (an IDE—integrated development environment—we can use to write and run R programs)</li>
+  </ul>
+
+  <pre>
+    # This is a single-line comment in R.
+
+    # Run code in RStudio:
+    #   Highlight the code you want to run
+    #   and click the "Run" button in the top-right of the panel.
+
+    # Clear the RStudio console: `CTRL + L`
+
+    # Install packages:
+    install.packages('splitstackshape')
+    install.packages('tidyverse')
+    install.packages('reshape2')
+    install.packages('devtools')
+    install.packages('plotly')
+    install.packages('crosstalk')
+    install.packages('DT')
+    install.packages('fivethirtyeight')
+
+    # Two different ways to include a package in your program:
+    require('tidyverse')
+    library('tidyverse')
+
+    # Print output:
+    print(1 + 2)
+
+    # Output:
+    # [1] 3
+
+    # Display documentation for a function:
+    ?install.packages
+    ?print
+  </pre>
+
+  <h2>Data Types and Variables</h2>
+
+  <pre>
+    # Variable assignment:
+    a <- 3
+    b <- 3.1415
+    c <- 'This is a string'
+    d <- 'This is a string'
+    e <- 'This is a different string'
+    f <- TRUE
+    g <- FALSE
+
+    # Unlike the other programming languages we've learned so far,
+    # R allows for the use of dots in variable names:
+    my.var <- 'This is my variable'
+    this.is.a.var <- 123
+
+    # Use the `typeof` function to find an item's data type:
+    typeof(a) # "double"
+    typeof(b) # "double"
+    typeof(c) # "character"
+    typeof(f) # "logical"
+
+    # Equality operator:
+    a == 3 # TRUE
+    a == b # FALSE
+    c == d # TRUE
+    c == e # FALSE
+  </pre>
+
+  <h2>Vectors</h2>
+
+  <pre>
+    ##
+    # Similar to Python lists, R <strong>vectors</strong> can contain multiple elements.
+    # Unlike Python lists, R vectors must contain items <strong>all of the same data type</strong>.
+    #
+    # More info:
+    # https://www.datamentor.io/r-programming/vector/
+    #
+
+    # Use the `c()` function to combine values into a vector:
+    names <- c('Alice', 'Bob', 'Chris')
+    numbers <- c(1, 2, 3, 4, 5)
+
+    names # "Alice" "Bob" "Chris"
+    numbers # 1 2 3 4 5
+
+    # If you attempt to put items of different types into the same vector,
+    # R will coerce the items to the same data type:
+    numbersAndBooleans <- c(1, 2, 3, T, F)
+    numbersAndStrings <- c(1, 2, '3', 4, 5)
+
+    numbersAndBooleans # 1 2 3 1 0
+    numbersAndStrings # "1" "2" "3" "4" "5"
+
+    # NOTE: In R, a single item is also a vector:
+    'foo'
+    1
+
+    # The `typeof` function returns the data type contained in the vector:
+    typeof('foo') # "character"
+    typeof(c('foo', 'bar', 'baz')) # "character"
+
+    # NOTE: Unlike many programming languages, R vectors index starting from the number 1:
+    names[1] # "Alice"
+    names[2] # "Bob"
+    names[3] # "Chris"
+    names[4] # NA (Not Available/missing value)
+
+    # Single-item vectors:
+    'foo'[1] # "foo"
+    'foo'[2] # NA
+    'foo'[3] # NA
+
+    1[1] # 1
+    1[2] # NA
+
+    # You can combine multiple vectors into a single vector:
+    moreNames <- c('Debbie', 'Elizabeth')
+    evenMoreNames <- c('Frank')
+    allTheNames <- c(names, moreNames, evenMoreNames, 'Gary')
+
+    names # "Alice" "Bob" "Chris"
+    moreNames # "Debbie" "Elizabeth"
+    evenMoreNames # "Frank"
+    allTheNames "Alice" "Bob" "Chris" "Debbie" "Elizabeth" "Frank" "Gary"
+
+    # You can create a vector by generating a sequence using the colon operator:
+    myNums = c(1, 3, 5, 7)
+    yourNums = 1:length(myNums)
+
+    myNums # 1 3 5 7
+    yourNums # 1 2 3 4
+
+    ##
+    # You can do arithmetic with vectors.
+    #
+    # More info:
+    # http://www.r-tutor.com/r-introduction/vector/vector-arithmetics
+    #
+
+    ourNums = myNums * yourNums
+    squaredNums = yourNums ** 2
+
+    ourNums # 1 6 15 28
+    squaredNums # 1 4 9 16
+
+    # You can assign names to a vector:
+    months <- c('Jan', 'Feb', 'Mar')
+    rainfall <- c(1.5, 3, 7.2)
+
+    names(rainfall) # NULL
+    names(rainfall) <- months
+    names(rainfall) # "Jan" "Feb" "Mar"
+
+    print(rainfall)
+
+    # Output:
+    # Jan Feb Mar
+    # 1.5 3.0 7.2
+
+    # Use single brackets to access a vector element with its name:
+    print(rainfall['Feb'])
+
+    # Output:
+    # Feb
+    # 3
+
+    # Use double brackets to access a vector element without its name:
+    print(rainfall['Feb'])
+
+    # Output:
+    # [1] 3
+  </pre>
+
+  <h2>Conditionals and Loops</h2>
+
+  <pre>
+    # `if` statement:
+    if (2 > 1) {
+      print("Yup, that's true")
+    }
+
+    # Output:
+    # [1] "Yup, that's true"
+
+    # `if...else` statement:
+    if (1 > 2) {
+      print("Yup, that's true")
+    } else if (1 == 2) {
+      print('No, this is true')
+    } else {
+      print('No, everything is false')
+    }
+
+    # Output:
+    # [1] "No, everything is false"
+
+    # `for` loop:
+    for (name in names) {
+      print(name)
+    }
+
+    # Output:
+    # [1] "Alice"
+    # [1] "Bob"
+    # [1] "Chris"
+
+    for (name in allTheNames) {
+      if (nchar(name) > 4) {
+        next
+      }
+
+      print(name)
+    }
+
+    # Output:
+    # [1] "Bob"
+    # [1] "Gary"
+  </pre>
+
+  <h2>Lists</h2>
+
+  <pre>
+    ##
+    # Unlike a vector, an R <strong>list</strong> can contain items with different data types.
+    #
+    # More info:
+    # http://www.r-tutor.com/r-introduction/list
+    #
+
+    myList <- list(1, 2, '3', 'This is a string', c(2, 4, 6), c('Alice', 'Bob'))
+
+    print(myList)
+
+    # Output:
+    # [[1]]
+    # [1] 1
+    #
+    # [[2]]
+    # [1] 2
+    #
+    # [[3]]
+    # [1] "3"
+    #
+    # [[4]]
+    # [1] "This is a string"
+    #
+    # [[5]]
+    # [1] 2 4 6
+    #
+    # [[6]]
+    # [1] "Alice" "Bob"
+
+    # Use single brackets to access a list slice:
+    typeof(myList[4]) # "list"
+    print(myList[4])
+
+    # Output:
+    # [[1]]
+    # [1] "This is a string"
+
+
+    # Use double brackets to directly access a list member:
+    typeof(myList[[4]]) # "character"
+    print(myList[[4]])
+
+    # Output:
+    # [1] "This is a string"
+
+    # You can name the members of a list:
+    studentInfo <- list(
+      names=c('Alice', 'Bob'),
+      ages=c(26, 25),
+      passing=c(TRUE, FALSE)
+    )
+
+    print(studentInfo)
+
+    # Output:
+    # $names
+    # [1] "Alice" "Bob"
+    #
+    # $ages
+    # [1] 26 25
+    #
+    # $passing
+    # [1] TRUE FALSE
+
+    # Use single brackets to access a list slice:
+    typeof(studentInfo['names']) # "list"
+    print(studentInfo['names'])
+
+    # Output:
+    # $names
+    # [1] "Alice" "Bob"
+
+    # Use double brackets to directly access a list member:
+    typeof(studentInfo[['names']]) # "character"
+    print(studentInfo[['names']])
+
+    # Output:
+    # [1] "Alice" "Bob"
+
+    # You can also use a dollar sign to directly access
+    # a named list member instead of double brackets:
+    typeof(studentInfo$names) # "character"
+    print(studentInfo$names)
+
+    # Output:
+    # [1] "Alice" "Bob"
+  </pre>
+
+  <h2>Statistical Methods and the Pipe Operator</h2>
+
+  <pre>
+    # Calculate a statistical summary:
+    rainfallSummary <- summary(rainfall)
+
+    print(rainfallSummary)
+
+    # Output:
+    # Min. 1st Qu.  Median    Mean 3rd Qu.    Max.
+    # 1.50    2.25    3.00    3.90    5.10    7.20
+
+    print(rainfallSummary['Median'])
+
+    # Output:
+    # Median
+    #      3
+
+    print(rainfallSummary[['3rd Qu.']])
+
+    # Output:
+    # [1] 5.1
+
+    # Calculate standard deviation:
+    sd(rainfall) # 2.954657
+
+    # Sum a vector:
+    sum(rainfall) # 11.7
+
+    # Round a number:
+    round(1.123456789, 2) # 1.12
+    round(1.123456789, 5) # 1.12346
+
+    ##
+    # You can create a pipeline of function calls using the pipe operator.
+    #
+    # More info:
+    # https://www.datacamp.com/community/tutorials/pipe-r-tutorial#howto
+    #
+
+    print(rainfall %>% summary())
+
+    # Output:
+    # Min. 1st Qu.  Median    Mean 3rd Qu.    Max.
+    # 1.50    2.25    3.00    3.90    5.10    7.20
+
+    rainfallStatsRoundedSum <- rainfall %>% summary() %>% sum() %>% round(1)
+    rainfallStatsRoundedSum # 22.9
+
+    # Equivalent to the piped functions above:
+    rainfallStats <- summary(rainfall)
+    rainfallStatsSum <- sum(rainfallStats) # 22.95
+    rainfallStatsRoundedSum <- round(rainfallStatsSum, 1) # 22.9
+
+    # Also equivalent:
+    round(sum(summary(rainfall)), 1) # 22.9
+  </pre>
+
+  <h2>Navigating the File System</h2>
+
+  <pre>
+    # Get the present working directory (the directory you're currently in).
+    # This is equivalent to the `pwd` terminal command.
+    getwd() # "/Users/alice"
+
+    # List the contents of the present working directory.
+    # This is equivalent to the `ls` terminal command.
+    dir()
+    # [1] "Applications" "Desktop"
+    # [3] "Documents"    "Downloads"
+    # [5] "Movies"       "Music"
+
+    # Change the present working directory (move to a different directory).
+    # This is equivalent to the `cd` terminal command.
+    setwd('Movies')
+    getwd() # "/Users/alice/Movies"
+
+    setwd('..')
+    getwd() # "/Users/alice"
+
+    setwd('/Users/alice/Movies')
+    getwd() # "/Users/alice/Movies"
+  </pre>
+
+  <h2>Reading a CSV</h2>
+
+  <pre>
+    # While in the directory containing the file `data.csv`:
+    sampleCsv <- read_csv('data.csv')
+
+    print(sampleCsv)
+
+    # Output:
+    # # A tibble: 1,000 x 5
+    #   id `First Name` `Last Name` Gender Amount
+    # &lt;int&gt; &lt;chr&gt;        &lt;chr&gt;       &lt;chr&gt;   &lt;dbl&gt;
+    #    1 Todd         Lopez       M       8068.
+    #    2 Joshua       White       M       7330.
+    #    3 Mary         Lewis       F      16335
+    #    4 Emily        Burns       F      12461.
+    #    5 Christina    Romero      F      15272.
+    #    6 Raymond      Andrews     M       7037.
+    #    7 Sandra       Baker       F      14002.
+    #    8 Todd         Diaz        M      10911
+    #    9 Alice        Burke       F      14199.
+    #   10 Wayne        Richards    M      16410.
+    # # ... with 990 more rows
+
+    # Use the `head` function to get the first n rows of a data frame:
+    print(head(sampleCsv, 4))
+
+    # Output:
+    # # A tibble: 4 x 5
+    #  id `First Name` `Last Name` Gender Amount
+    # &lt;int&gt; &lt;chr&gt;        &lt;chr&gt;       &lt;chr&gt;   &lt;dbl&gt;
+    #   1 Todd         Lopez       M       8068.
+    #   2 Joshua       White       M       7330.
+    #   3 Mary         Lewis       F      16335
+    #   4 Emily        Burns       F      12461.
+  </pre>
+
+  <h2>Tibbles</h2>
+
+  <p>A <strong>tibble</strong> (a play on the word "table")
+    is a modernized version of a data frame.
+    Tibbles are implemented in the `tidyverse` library and
+    improve upon R's traditional `data.frame` object.
+    See <a href="http://r4ds.had.co.nz/tibbles.html">here</a> for more info.</p>
+
+  <p>The <strong>tidyverse</strong> is a collection of R packages designed for data science.
+    The tidyverse is very popular in the world of R programming,
+    so if you plan on working significantly with R, you should get familiar with the tidyverse.
+    For more info, see the <a href="https://www.tidyverse.org/">tidyverse website</a>.
+    The creator of the tidyverse, <a href="https://en.wikipedia.org/wiki/Hadley_Wickham">Hadley Wickham</a>,
+    has also written a book that's available to read online:
+    <a href="http://r4ds.had.co.nz/"><em>R for Data Science</em></a>.</p>
+
+  <pre>
+  </pre>
+
+  <script>
+    document.querySelectorAll('.js-hideable').forEach(hideable => {
+      hideable.addEventListener('click', e => e.target.classList.toggle('hidden'));
+    });
+  </script>
+</body>
+
+</html>
